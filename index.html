@@ -12,6 +12,7 @@
             --text: #e6edf3;
             --muted: #8b949e;
             --green: #3fb950;
+            --red: #f85149;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -43,7 +44,9 @@
             margin-right: 8px;
             box-shadow: 0 0 0 4px rgba(63,185,80,0.15);
         }
+        .dot.off { background: var(--red); box-shadow: 0 0 0 4px rgba(248,81,73,0.15); }
         .banner h2 { font-size: 1.75rem; font-weight: 600; color: var(--green); margin-bottom: 8px; }
+        .banner h2.off, .service-status.off { color: var(--red); }
         .banner p { color: var(--muted); font-size: 0.9rem; }
         .card {
             background: var(--card);
@@ -92,7 +95,18 @@
         fetch("status.json")
             .then((response) => response.json())
             .then((data) => {
-                document.getElementById("service-status").textContent = data.status;
+                const active = data.active;
+                const statusEl = document.getElementById("service-status");
+                statusEl.textContent = active ? data.status : "false";
+                statusEl.classList.toggle("off", !active);
+                const banner = document.querySelector(".banner h2");
+                banner.innerHTML = active
+                    ? '<span class="dot"></span>All systems operational'
+                    : '<span class="dot off"></span>Service inactive';
+                banner.classList.toggle("off", !active);
+                document.querySelector(".banner p").textContent = active
+                    ? "Everything is running smoothly."
+                    : "The API is currently inactive.";
             })
             .catch(() => {});
     </script>
