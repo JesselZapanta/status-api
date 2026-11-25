@@ -82,13 +82,19 @@
             <h3>Services</h3>
             <div class="service">
                 <span class="service-name">API</span>
-                <span class="service-status">Operational</span>
+                <span class="service-status" id="service-status">ok</span>
             </div>
         </div>
         <footer>Last updated: <span id="updated"></span></footer>
     </div>
     <script>
         document.getElementById("updated").textContent = new Date().toUTCString();
+        fetch("status.json")
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById("service-status").textContent = data.status;
+            })
+            .catch(() => {});
     </script>
 </body>
 </html>
