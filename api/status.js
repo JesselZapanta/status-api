@@ -2,8 +2,7 @@
 export async function GET() {
     return Response.json(
         {
-            status: "ok",
-            active: false
+            status: "false"
         },
         {
             status: 200,

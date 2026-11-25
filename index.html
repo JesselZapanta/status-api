@@ -85,7 +85,7 @@
             <h3>Services</h3>
             <div class="service">
                 <span class="service-name">API</span>
-                <span class="service-status" id="service-status">ok</span>
+                <span class="service-status" id="service-status">false</span>
             </div>
         </div>
         <footer>Last updated: <span id="updated"></span></footer>
@@ -95,16 +95,16 @@
         fetch("status.json")
             .then((response) => response.json())
             .then((data) => {
-                const active = data.active;
+                const ok = data.status === "ok";
                 const statusEl = document.getElementById("service-status");
-                statusEl.textContent = active ? data.status : "false";
-                statusEl.classList.toggle("off", !active);
+                statusEl.textContent = data.status;
+                statusEl.classList.toggle("off", !ok);
                 const banner = document.querySelector(".banner h2");
-                banner.innerHTML = active
+                banner.innerHTML = ok
                     ? '<span class="dot"></span>All systems operational'
                     : '<span class="dot off"></span>Service inactive';
-                banner.classList.toggle("off", !active);
-                document.querySelector(".banner p").textContent = active
+                banner.classList.toggle("off", !ok);
+                document.querySelector(".banner p").textContent = ok
                     ? "Everything is running smoothly."
                     : "The API is currently inactive.";
             })
